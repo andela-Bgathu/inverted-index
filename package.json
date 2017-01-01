@@ -4,7 +4,7 @@
     "description": "object that takes a JSON array of text objects and creates an index from the array",
     "main": "gulpfile.js",
     "scripts": {
-        "test": "./node node_modules/.bin/gulp test",
+        "test": "node ./node_modules/.bin/gulp test",
         "coverage": "./node_modules/.bin/istanbul cover --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
     },
     "repository": {
