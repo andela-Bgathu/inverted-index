@@ -1,0 +1,24 @@
+{
+  "name": "inverted-index",
+  "version": "1.0.0",
+  "description": "object that takes a JSON array of text objects and creates an index from the array",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-Bgathu/inverted-index.git"
+  },
+  "author": "Andela-Bgathu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela-Bgathu/inverted-index/issues"
+  },
+  "homepage": "https://github.com/andela-Bgathu/inverted-index#readme",
+  "devDependencies": {
+    "browser-sync": "^2.18.5",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.0.0"
+  }
+}
