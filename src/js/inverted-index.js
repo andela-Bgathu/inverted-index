@@ -5,11 +5,17 @@
 class InvertedIndex {
     constructor(path) {
         this.path = path;
+        //this.fs = require('fs');
     }
     readFile() {
-        var file;
-        file = fs.readFileSync(this.path, 'utf8');
-        return JSON.parse(file);
+        let dataFile;
+        try {
+            let file = this.fs.readFileSync(this.path, 'utf8');
+            dataFile = JSON.parse(file);
+        } catch (e) {
+            dataFile = [];
+        }
+        return dataFile;
     }
     rawIndex() {
             let rawData = [];
@@ -61,7 +67,7 @@ class InvertedIndex {
         return this.createIndex();
     }
 
-    searchIndex(file_to_search, [search_terms]) {
+    searchIndex() {
         // set up search terms and file
         if ((arguments[0]).includes('.json')) {
             this.file_to_search = arguments[0];
@@ -95,8 +101,9 @@ class InvertedIndex {
     }
 
 }
-
-var fs = require('fs');
-const path = '../../books.json';
-var test = new InvertedIndex(path);
-console.log(test.searchIndex('file.json', 'of', 'a', 'Lord', 'rings', 'dwarf', 'and', ['Alice', 'alliance']));
+// module.exports = InvertedIndex;
+// var fs = require('fs');
+// const path = '../../books.json';
+// var test = new InvertedIndex(path);
+//console.log(test.searchIndex('of'));
+//console.log(test.searchIndex('file.json', 'of', 'a', 'Lord', 'rings', 'dwarf', 'and', ['Alice', 'alliance']));
