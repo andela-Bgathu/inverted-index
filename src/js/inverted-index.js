@@ -73,14 +73,25 @@ class InvertedIndex {
         // do the actual searching
         let index = this.getIndex();
         let term = this.search_terms[0];
-        index.forEach(obj => {
-            if (Object.keys(obj)[0] == term) {
-                console.log(obj);
-                return obj;
+        let searchResults = [];
+        this.search_terms.forEach(term => {
+            if (!Array.isArray(term)) {
+                index.forEach(obj => {
+                    if (Object.keys(obj)[0] == term) {
+                        searchResults.push(obj);
+                    }
+                });
             } else {
-                return 'term not found';
+                term.forEach(item => {
+                    index.forEach(obj => {
+                        if (Object.keys(obj)[0] == item) {
+                            searchResults.push(obj);
+                        }
+                    });
+                })
             }
-        });
+        })
+        return searchResults;
     }
 
 }
@@ -88,4 +99,4 @@ class InvertedIndex {
 var fs = require('fs');
 const path = '../../books.json';
 var test = new InvertedIndex(path);
-console.log(test.searchIndex('file.json', 'of'));
+console.log(test.searchIndex('file.json', 'of', 'a', 'Lord', 'rings', 'dwarf', 'and', ['Alice', 'alliance']));
