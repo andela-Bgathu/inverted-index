@@ -5,7 +5,7 @@
 class InvertedIndex {
     constructor(path) {
         this.path = path;
-        //this.fs = require('fs');
+        this.fs = require('fs');
     }
     readFile() {
         let dataFile;
