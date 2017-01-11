@@ -101,7 +101,7 @@ class InvertedIndex {
     }
 
 }
-// module.exports = InvertedIndex;
+module.exports = InvertedIndex;
 // var fs = require('fs');
 // const path = '../../books.json';
 // var test = new InvertedIndex(path);
