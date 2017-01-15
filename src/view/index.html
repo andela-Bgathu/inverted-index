@@ -23,7 +23,6 @@
             <!-- left panel div -->
             <!-- make two divs on top each other-->
             <div class="left-top">
-                <p> {{ left }}</p>
                 <form>
                     <div class="form-group">
                         <label>choose your JSON file</label>
@@ -35,7 +34,18 @@
                 </form>
             </div>
             <div class="left-bottom">
-
+                <table>
+                    <tr>
+                        <th>
+                            <Strong>Opened Files </Strong>
+                        </th>
+                    </tr>
+                    <tr ng-repeat="file in files">
+                        <td>
+                            <Strong>{{ file }}</Strong>
+                        </td>
+                    </tr>
+                </table>
             </div>
             <!-- end of two divisions on the left side -->
         </div>
@@ -47,26 +57,49 @@
                 <div class="searchFiles ">
                     <form class="navbar-form navbar-left">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
+                            <input type="text" class="form-control" placeholder="file.json and or search_terms" id="search">
                         </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
+                        <button type="submit" class="btn btn-default" ng-click="search()">Search</button>
                     </form>
                 </div>
             </div>
             <!-- a table is to come here -->
             <div class="rightbody ">
-                <p> {{ right }}</p>
+                <strong> Inverted Index Table</strong>
                 <div id="indextable" class="table table-bordered">
                     <table>
-                        <tr>
+                        <tr id="headers">
                             <th>Name</th>
                             <th>Doc1</th>
                             <th>Doc2</th>
+                            <th>Doc3</th>
+                            <th>Doc4</th>
                         </tr>
-                        <tr ng-repeat="data in file">
+                        <tr ng-repeat="data in indexData">
                             <td>{{data.name}}</td>
                             <td>{{(data.loc).includes(0) ? 'X' : ' '}}</td>
                             <td>{{(data.loc).includes(1) ? 'X' : ' '}}</td>
+                            <td>{{(data.loc).includes(2) ? 'X' : ' '}}</td>
+                            <td>{{(data.loc).includes(3) ? 'X' : ' '}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <strong> Search Results Table</strong>
+                <div id="Searchtable" class="table table-bordered">
+                    <table>
+                        <tr id="headers">
+                            <th>Name</th>
+                            <th>Doc1</th>
+                            <th>Doc2</th>
+                            <th>Doc3</th>
+                            <th>Doc4</th>
+                        </tr>
+                        <tr ng-repeat="data in results">
+                            <td>{{data.name}}</td>
+                            <td>{{(data.loc).includes(0) ? 'X' : ' '}}</td>
+                            <td>{{(data.loc).includes(1) ? 'X' : ' '}}</td>
+                            <td>{{(data.loc).includes(2) ? 'X' : ' '}}</td>
+                            <td>{{(data.loc).includes(3) ? 'X' : ' '}}</td>
                         </tr>
                     </table>
                 </div>
