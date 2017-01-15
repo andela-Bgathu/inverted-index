@@ -32,8 +32,8 @@ body {
     margin-top: 100px;
     margin-left: 25px;
     width: 20%;
+    min-height: 900px;
     height: auto;
-    /*900px;*/
     padding-left: 30px;
     background-color: #B9D7D9;
     margin-bottom: 10px;
@@ -44,6 +44,7 @@ body {
     float: right;
     margin-top: 100px;
     width: 78%;
+    min-height: 900px;
     height: auto;
     padding-left: 10px;
     background-color: #F4EBC3;
