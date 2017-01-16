@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon">
+    <link href="https://s3.amazonaws.com/codecademy-content/projects/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="./css/main.css" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto:500,300,700,400' rel='stylesheet' type='text/css'>
+    <script src="https://use.fontawesome.com/934a97265e.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+</head>
+
+<body ng-app="InvertedIndexApp">
+    <div class="header">
+        <div class="container">
+            <h1 id="headtext">Inverted Index</h1>
+        </div>
+    </div>
+    <!-- main div -->
+    <div class="main" ng-controller="MainController">
+        <!-- two divisions inside the the main div -->
+        <div class="left">
+            <!-- left panel div -->
+            <!-- make two divs on top each other-->
+            <div class="left-top">
+                <form>
+                    <div class="form-group">
+                        <label>choose your JSON file</label>
+                        <input type="file" name="file" id="file" />
+                        <br>
+                        <button type="submit" class="btn btn-primary" id="createIndex" ng-click="getData()">upload</button>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="createIndex" ng-click="fileData()">Create Index</button>
+                </form>
+            </div>
+            <div class="left-bottom">
+                <table>
+                    <tr>
+                        <th>
+                            <Strong>Opened Files </Strong>
+                        </th>
+                    </tr>
+                    <tr ng-repeat="file in files">
+                        <td>
+                            <Strong>{{ file }}</Strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- end of two divisions on the left side -->
+        </div>
+        <div class="right">
+            <!-- right side div -->
+            <div class="right-nav">
+                <div class="selectfile">
+                </div>
+                <div class="searchFiles ">
+                    <form class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="file.json and or search_terms" id="search">
+                        </div>
+                        <button type="submit" class="btn btn-default" ng-click="search()">Search</button>
+                    </form>
+                </div>
+            </div>
+            <!-- a table is to come here -->
+            <div class="rightbody ">
+                <strong> Inverted Index Table</strong>
+                <div id="indextable" class="table table-bordered">
+                    <table>
+                        <tr id="headers">
+                            <th>Name</th>
+                            <th>Doc1</th>
+                            <th>Doc2</th>
+                            <th>Doc3</th>
+                            <th>Doc4</th>
+                        </tr>
+                        <tr ng-repeat="data in indexData">
+                            <td>{{data.name}}</td>
+                            <td>{{(data.loc).includes(0) ? 'X' : ' '}}</td>
+                            <td>{{(data.loc).includes(1) ? 'X' : ' '}}</td>
+                            <td>{{(data.loc).includes(2) ? 'X' : ' '}}</td>
+                            <td>{{(data.loc).includes(3) ? 'X' : ' '}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <strong> Search Results Table</strong>
+                <div id="Searchtable" class="table table-bordered">
+                    <table>
+                        <tr id="headers">
+                            <th>Name</th>
+                            <th>Doc1</th>
+                            <th>Doc2</th>
+                            <th>Doc3</th>
+                            <th>Doc4</th>
+                        </tr>
+                        <tr ng-repeat="data in results">
+                            <td>{{data.name}}</td>
+                            <td>{{(data.loc).includes(0) ? 'X' : ' '}}</td>
+                            <td>{{(data.loc).includes(1) ? 'X' : ' '}}</td>
+                            <td>{{(data.loc).includes(2) ? 'X' : ' '}}</td>
+                            <td>{{(data.loc).includes(3) ? 'X' : ' '}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <!-- end of main div -->
+    </div>
+    <script src="js/app.js "></script>
+    <script src="../js/inverted-index.js "></script>
+
+    <!-- Controllers -->
+    <script src="js/controllers/MainController.js "></script>
+    <!-- directives -->
+    <!-- services -->
+    <script src="js/services/invertedIndex.js "></script>
+
+
+</body>
+
+</html>
