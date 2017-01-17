@@ -10,7 +10,7 @@ describe('Inverted Index Tests', () => {
 
     describe('Populate Index', () => {
         it('Asserts that index is created once JSON file is read', () => {
-            expect(indexInstance.getIndex()).toEqual(jasmine.any(Object));
+            expect(indexInstance.createIndex()).toEqual(jasmine.any(Object));
         });
         it('Asserts that the created index is not empty', () => {
             expect(indexInstance.createIndex().length).not.toBe(0);
