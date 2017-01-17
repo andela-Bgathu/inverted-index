@@ -4,8 +4,8 @@
     "description": "object that takes a JSON array of text objects and creates an index from the array",
     "main": "gulpfile.js",
     "scripts": {
-        "test": "node ./node_modules/.bin/gulp test",
-        "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- -R spec ./jasmine/spec/*.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+        "test": "./node_modules/istanbul/lib/cli.js cover node ./node_modules/.bin/gulp test",
+        "coverage":"cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     },
     "repository": {
         "type": "git",
@@ -27,6 +27,5 @@
         "gulp-sass": "^3.0.0",
         "istanbul": "^0.4.5",
         "jshint": "^2.9.4",
-        "mocha": "^3.2.0"
     }
 }
