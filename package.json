@@ -5,7 +5,7 @@
     "main": "gulpfile.js",
     "scripts": {
         "test": "./node_modules/istanbul/lib/cli.js cover node ./node_modules/.bin/gulp test",
-        "coverage":"cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+        "coverage": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
     },
     "repository": {
         "type": "git",
@@ -26,6 +26,6 @@
         "gulp-open": "^2.0.0",
         "gulp-sass": "^3.0.0",
         "istanbul": "^0.4.5",
-        "jshint": "^2.9.4",
+        "jshint": "^2.9.4"
     }
 }
