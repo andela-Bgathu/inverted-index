@@ -1,6 +1,5 @@
-'use strict';
 const Index = require('../../src/js/inverted-index');
-const path = '/Users/boswellgathu/src/JS/inverted-index/books.json';
+const path = './books.json';
 let indexInstance = new Index(path);
 let jsonData = indexInstance.readFile();
 describe('Inverted Index Tests', () => {
