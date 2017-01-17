@@ -14,7 +14,7 @@
       let jsondata = JSON.parse(filedata);
       dataFile.push(...jsondata);
     } catch (e) {
-        dataFile = [];
+      console.log(e);
     }
     return dataFile;
   }
@@ -22,6 +22,14 @@
   rawIndex() {
       let rawData = [];
       let books = this.readFile();
+      // check if the json is the expected
+      let keys = [];
+      books.forEach((book) => {
+        keys.push(...Object.keys(book));
+      })
+      let k = new Set(keys);
+      keys = Array.from(k);
+      if(keys[0] == "title" || keys[0] == "text"){
       books.forEach((book, index) => {
           let words = JSON.stringify(book)
               .replace(/,(?=\S)/g, ' ')
@@ -33,9 +41,13 @@
       })
       return rawData;
   }
+else{
+  return 'wrong data';
+}}
   createIndex() {
           let indexData = [];
           let data = this.rawIndex(); // list of list
+          if (data != 'wrong data'){
           data.forEach((item) => {
               if (indexData.length == 0) {
                   let tokenObj = {
@@ -67,6 +79,9 @@
           })
           return indexData;
       }
+    else{
+      return ('empty index');
+    }}
         // returns the Index
     getIndex() {
         this.searchData = this.createIndex();
@@ -85,6 +100,7 @@
         // do the actual searching
         let index = this.searchData;
         let searchResults = [];
+        if (index != ('empty index')){
         this.search_terms.forEach(term => {
             if (!Array.isArray(term)) {
                 index.forEach(obj => {
@@ -104,4 +120,7 @@
         })
         return searchResults;
     }
+  else{
+    return ('Index is empty');
+  }}
 }
