@@ -2,6 +2,8 @@ app.controller('MainController', ['$scope', function($scope) {
     $scope.left = 'upload file';
     $scope.right = 'table goes here.';
     $scope.data = '';
+    $scope.showIndex = false;
+    $scope.showSearch = false;
     $scope.files = [];
     $scope.indexData = [];
     $scope.getData = () => {
@@ -15,13 +17,16 @@ app.controller('MainController', ['$scope', function($scope) {
     }
     const index = new InvertedIndex();
     $scope.fileData = () => {
+        $scope.showIndex = true;
+        $scope.showSearch = false;
         $scope.indexData = (index.getIndex($scope.data));
     }
     $scope.search = () => {
+        $scope.showIndex = false;
+        $scope.showSearch = true;
         $scope.terms = document.getElementById("search").value;
         $scope.terms = $scope.terms.split(" ")
         $scope.results = index.searchIndex($scope.terms);
-        console.log($scope.results);
     }
 
 
