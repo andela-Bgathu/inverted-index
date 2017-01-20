@@ -1,6 +1,6 @@
 const InvertedIndex = require("../../src/js/inverted-index.js");
 describe('test functionality', () => {
-  const path1 = [{
+const path1 = [{
       "text": "Alice falls into a rabbit hole and enters a world full of imagination.",
       "title": "Alice in Wonderland"
     },
@@ -8,12 +8,12 @@ describe('test functionality', () => {
       "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.",
       "title": "The Lord of the Rings: The Fellowship of the Ring."
     }];
-  const path2 = "./books.json";
-  const path3 = "./wysla.json";
-  const path4 = "./invalid.json";
-  const path5 = "./empty.json";
-  const path6 = "./notExist.json"
-  const path7 = "./incomplete.json"
+  const path2 = __dirname +'/books.json';
+  const path3 =  __dirname +'/wysla.json';
+  const path4 =  __dirname +'/invalid.json';
+  const path5 =  __dirname +'/empty.json';
+  const path6 =  __dirname +'/notExist.json';
+  const path7 =  __dirname +'/incomplete.json';
   const index = new InvertedIndex();
   describe('tests readFile function', () => {
     it('tests readFile returns data in file', () => {
