@@ -65,8 +65,8 @@
             </div>
             <!-- a table is to come here -->
             <div class="rightbody ">
-                <strong> Inverted Index Table</strong>
-                <div id="indextable" class="table table-bordered">
+                <div id="indextable" class="table table-bordered" ng-if="showIndex">
+                    <strong> Inverted Index Table</strong>
                     <table>
                         <tr id="headers">
                             <th>Name</th>
@@ -84,8 +84,8 @@
                         </tr>
                     </table>
                 </div>
-                <strong> Search Results Table</strong>
-                <div id="Searchtable" class="table table-bordered">
+                <div id="Searchtable" class="table table-bordered" ng-if="showSearch">
+                    <strong> Search Results Table</strong>
                     <table>
                         <tr id="headers">
                             <th>Name</th>
