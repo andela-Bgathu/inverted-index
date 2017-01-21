@@ -65,8 +65,11 @@
             </div>
             <!-- a table is to come here -->
             <div class="rightbody ">
-                <strong> Inverted Index Table</strong>
-                <div id="indextable" class="table table-bordered">
+                <p>{{ data }}</p>
+
+                <p>{{ indexData }}</p>
+                <div id="indextable" class="table table-bordered" ng-if="showIndex">
+                    <strong> Inverted Index Table</strong>
                     <table>
                         <tr id="headers">
                             <th>Name</th>
@@ -84,8 +87,8 @@
                         </tr>
                     </table>
                 </div>
-                <strong> Search Results Table</strong>
-                <div id="Searchtable" class="table table-bordered">
+                <div id="Searchtable" class="table table-bordered" ng-if="showSearch">
+                    <strong> Search Results Table</strong>
                     <table>
                         <tr id="headers">
                             <th>Name</th>
@@ -108,16 +111,13 @@
         </div>
         <!-- end of main div -->
     </div>
-    <script src="js/app.js "></script>
-    <script src="../js/inverted-index.js "></script>
+    <script src="./js/app.js "></script>
+    <script src="../js/bundle.js "></script>
 
     <!-- Controllers -->
     <script src="js/controllers/MainController.js "></script>
     <!-- directives -->
     <!-- services -->
-    <script src="js/services/invertedIndex.js "></script>
-
-
 </body>
 
 </html>
