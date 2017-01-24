@@ -72,6 +72,9 @@ body {
 #table {
     width: 100%;
 }
+#indexes {
+    margin-bottom: 30px;
+}
 
 th {
     width: 200px;
@@ -82,4 +85,11 @@ th,
 td {
     border: 1px solid black;
     text-align: center;
+}
+.fileholder{
+    margin-right: 40px;
+}
+.search{
+    margin-left: 15px;
+    width: 171px;
 }
