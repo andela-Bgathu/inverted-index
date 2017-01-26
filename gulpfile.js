@@ -1,25 +1,29 @@
-// include gulp
-var gulp = require('gulp'),
-    gulp_open = require('gulp-open'),
-    jasmine = require('gulp-jasmine');
-//livereload = require('gulp-livereload');
+const gulp = require('gulp');
+const jasmine = require('gulp-jasmine');
+const livereload = require('gulp-livereload');
+const browserSync = require('browser-sync').create();
 
-// include plug-ins
-// makes browser do a full-page refresh when change is made on static files (.js,.scss,.html)
-var browserSync = require("browser-sync").create();
-
-gulp.task("default", ['jasBrowse', 'watch', 'test']);
 // run tests
-gulp.task('test', function() {
-    gulp.src("./jasmine/spec/inverted-index-test.js")
+gulp.task('test', () => {
+  gulp.src('./jasmine/spec/inverted-index-test.js')
         .pipe(jasmine());
 });
-// open the .html file on the default browser
-gulp.task('jasBrowse', function() {
-    gulp.src("./jasmine/SpecRunner.html").pipe(gulp_open());
+gulp.task('Front', () => {
+  browserSync.init({
+    server: {
+      baseDir: './src',
+    },
+    port: 2700,
+    ui: {
+      port: 2700,
+    },
+  });
+  gulp.watch('./src/**/*.{html,css,js}').on('change', browserSync.reload);
 });
-//reload the jasmine broswer whenevr the spec files are changed
-gulp.task('watch', function() {
-    gulp.watch('./jasmine/spec/*.js', browserSync.reload);
-    //livereload.listen();
+
+gulp.task('watch', () => {
+  gulp.watch('./src/**/*.{html,css,js}').on('change', browserSync.reload);
+  livereload.listen();
 });
+
+gulp.task('default', ['watch', 'test', 'Front']);
