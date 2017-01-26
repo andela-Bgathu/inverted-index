@@ -39,7 +39,6 @@ class InvertedIndex {
       if (err instanceof SyntaxError) {
         return 'File Empty or Invalid Json object';
       }
-      return err;
     }
   }
 
@@ -60,7 +59,7 @@ class InvertedIndex {
         dataValid = true;
       }
       return dataValid;
-    } else { return false; }
+    }
   }
 
   /**
@@ -81,8 +80,6 @@ class InvertedIndex {
         });
       });
       return rawData;
-    } else {
-      return 'false';
     }
   }
 
