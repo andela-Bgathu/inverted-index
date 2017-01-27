@@ -23,7 +23,8 @@ Requires Nodejs and npm to be installed on your machine
 
 ### How to use it:
 -----------------------------------------------------------
-	1. Upload a file
+  
+  1. Upload a file
   2. Create Index
   3. Click on show Index to view the index
   4. Then use the search button to search words from the index
