@@ -49,8 +49,8 @@ class InvertedIndex {
    * @return {Object} - [word, location: [0 || 1 || 0, 1] ].
    */
   cleanData(JsonData) {
+    const rawData = [];
     if (this.validateJsonData(JsonData)) {
-      const rawData = [];
       JsonData.forEach((book, index) => {
         const words = JSON.stringify(book)
           .replace(/,(?=\S)/g, ' ')
@@ -60,10 +60,10 @@ class InvertedIndex {
           rawData.push([word.toLowerCase(), index]);
         });
       });
-      return rawData;
     } else {
       return 'false';
     }
+    return rawData;
   }
 
   /**
@@ -90,11 +90,11 @@ class InvertedIndex {
     if (this.checkErrors(cleanedData)) {
       cleanedData.forEach((item) => {
         if (indexData.length === 0) {
-          const tokenObj = {
+          const tokenobject = {
             name: item[0],
             loc: [item[1]]
           };
-          indexData.push(tokenObj); // {name:'alice', loc:[1]}
+          indexData.push(tokenobject); // {name:'alice', loc:[1]}
         } else {
           const tokensList = [];
           indexData.forEach((token) => {
@@ -109,17 +109,17 @@ class InvertedIndex {
               }
             });
           } else {
-            const tokenObj = {
+            const tokenobject = {
               name: item[0],
               loc: [item[1]]
             };
-            indexData.push(tokenObj);
+            indexData.push(tokenobject);
           }
         }
       });
     }
     this.indexes[file] = indexData;
-  } // end of createIndex
+  }
 
   /**
    * return Index.
@@ -130,7 +130,6 @@ class InvertedIndex {
   }
   /**
    * process search terms in recursive arrays.
-   * @param {string} - filename.json
    * @param {string} - search terms
    * @return {Array} - [search terms].
    */
@@ -140,7 +139,6 @@ class InvertedIndex {
 
     /**
    * set up filename and search terms.
-   * @param {string} - filename.json - optional
    * @param {string} - search terms
    * @return {Array} - [filename, [terms]].
    */
