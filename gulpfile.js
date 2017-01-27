@@ -8,7 +8,7 @@ gulp.task('test', () => {
   gulp.src('./jasmine/spec/inverted-index-test.js')
         .pipe(jasmine());
 });
-gulp.task('Front', () => {
+gulp.task('browser', () => {
   browserSync.init({
     server: {
       baseDir: './src',
@@ -26,4 +26,4 @@ gulp.task('watch', () => {
   livereload.listen();
 });
 
-gulp.task('default', ['watch', 'test', 'Front']);
+gulp.task('default', ['watch', 'test', 'browser']);
