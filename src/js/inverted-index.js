@@ -39,7 +39,6 @@ class InvertedIndex {
       if (err instanceof SyntaxError) {
         return 'File Empty or Invalid Json object';
       }
-      return err;
     }
   }
 
@@ -49,18 +48,18 @@ class InvertedIndex {
    * @return {bool} - true || false.
    */
   validateJsonData(JsonData) {
-    let dataValid = false;
+    let dataValid;
     const keyArray = []; // hold all the objects keys
     if (Array.isArray(JsonData)) {
       JsonData.forEach((book) => {
         keyArray.push(...(Object.keys(book)));
       });
       const keys = Array.from(new Set(keyArray));
-      if (keys.length === 2) {
+      if (keys.length === 2 && keys.includes('title', 'text')) {
         dataValid = true;
-      }
-      return dataValid;
-    } else { return false; }
+      } else { dataValid = false; }
+    } else { dataValid = false; }
+    return dataValid;
   }
 
   /**

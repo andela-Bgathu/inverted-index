@@ -15,6 +15,7 @@ describe('test functionality', () => {
   const path5 = __dirname +'/empty.json';
   const path6 = __dirname +'/notExist.json';
   const path7 = __dirname +'/incomplete.json';
+  const path8 = __dirname +'/invalidjson.json';
   const index = new InvertedIndex();
   describe('tests readFile function', () => {
     it('tests readFile returns data in file', () => {
@@ -44,6 +45,10 @@ describe('test functionality', () => {
       const bookdata = index.getJson(index.readFile(path4));
       expect(index.validateJsonData(bookdata)).toBe(false);
     });
+    it('tests validateJsonData returns false when book data is invalid', () => {
+      const bookdata = index.getJson(index.readFile(path8));
+      expect(index.validateJsonData(bookdata)).toBe(false);
+    });
   });
   describe('tests cleanData function', () => {
     it('tests cleanData returns false when data is not valid json', () => {
@@ -59,7 +64,7 @@ describe('test functionality', () => {
       expect(index.checkErrors([{}])).toBe(true);
     });
     it('tests checkErrors returns false when no errors', () => {
-      expect(index.checkErrors('File Empty')).toBe(true);
+      expect(index.checkErrors('false')).toBe(false);
     });
   });
   describe('tests searchTerms function', () => {
