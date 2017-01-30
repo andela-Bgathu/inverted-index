@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon">
+    <link href="https://s3.amazonaws.com/codecademy-content/projects/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="./view/css/main.css" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto:500,300,700,400' rel='stylesheet' type='text/css'>
+    <script src="https://use.fontawesome.com/934a97265e.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+</head>
+
+<body ng-app="InvertedIndexApp">
+    <div class="header">
+        <div class="container">
+            <h1 id="headtext">Inverted Index</h1>
+        </div>
+    </div>
+    <!-- main div -->
+    <div class="main" ng-controller="MainController">
+        <!-- two divisions inside the the main div -->
+        <div class="left">
+            <!-- left panel div -->
+            <!-- make two divs on top each other-->
+            <div class="left-top">
+                <form>
+                    <div class="form-group">
+                        <label>choose your JSON file</label>
+                        <input type="file" name="file" id="file" />
+                        <br>
+                        <button type="submit" class="btn btn-primary" id="createIndex" ng-click="getData()">upload</button>
+                        {{ file }} <span ng-if="file"> uploaded</span>
+                        <br/>
+                        <br/>
+                        <button type="submit" class="btn btn-primary" id="createIndex" ng-click="index()">Create Index</button>
+                    </div>
+                     <div class="alert alert-danger" ng-if="close">
+                <button type="button" class="close" ng-click="closeButton()">×</button> <strong>Error!</strong> {{ErrorTextAlert}}</div>
+                </form>
+            </div>
+            <div class="left-bottom">
+                <table class="fileholder">
+                    <tr>
+                        <th>
+                            <Strong>Opened Files </Strong>
+                        </th>
+                        <th>
+                            <Strong> Index </Strong>
+                        </th>
+                    </tr>
+                    <tr ng-repeat="file in files">
+                        <td>
+                            <Strong>{{ file }}</Strong>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary" id="createIndex" ng-if="file" ng-click="fileData(file)">Show Index</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- end of two divisions on the left side -->
+        </div>
+        <div class="right">
+            <!-- right side div -->
+            <div class="right-nav">
+                <div class="selectfile">
+                    <select ng-model="selected" class="search" id="selectfile">
+                    <option selected disabled hidden value="">Select file</option>
+                    <option ng-repeat="file in searchfiles" value="file">{{ file }}</option>
+                    </select>
+                </div>
+                <div class="searchFiles ">
+                    <form class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="file.json and or search_terms" id="search">
+                        </div>
+                        <button type="submit" class="btn btn-default" ng-click="search()">Search</button>
+                    </form>
+                </div>
+            </div>
+            <!-- a table is to come here -->
+            <div class="rightbody " >
+                <div id="indextable" class="table table-bordered" ng-if="showIndex" ng-repeat="book in objkey(indexData)">
+                    <table id="indexes" >
+                       <thead>
+                       <tr id="headers">
+                         <th colspan="3"> <button type="submit" class="btn btn-primary" id="createIndex" ng-click="showRows(showRowText)">{{ showRowText }}</button>         {{book}}</th>
+                       </tr>
+                       </thead>
+                       <tbody ng-if="showRow">
+                        <tr id="headers">
+                            <th>Name</th>
+                            <th>Doc1</th>
+                            <th>Doc2</th>
+                        </tr>
+                        <tr ng-repeat="page in indexData[book]">
+                            <td>{{page.name}}</td>
+                            <td>{{(page.loc).includes(0) ? 'X' : ' '}}</td>
+                            <td>{{(page.loc).includes(1) ? 'X' : ' '}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="Searchtable" class="table table-bordered" ng-if="showSearch" ng-repeat="data in objkey(results)">
+                    <strong> Search Results For {{ data }}</strong>
+                    <table>
+                        <tr id="headers">
+                            <th>Name</th>
+                            <th>Doc1</th>
+                            <th>Doc2</th>
+                        </tr>
+                        <tr ng-repeat="file in results[data]">
+                            <td>{{file.name}}</td>
+                            <td>{{(file.loc).includes(0) ? 'X' : ' '}}</td>
+                            <td>{{(file.loc).includes(1) ? 'X' : ' '}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <!-- end of main div -->
+    </div>
+    <script src="./view/js/app.js "></script>
+    <script src="../js/invertedIndex.js "></script>
+
+    <!-- Controllers -->
+    <script src="./view/js/controllers/MainController.js "></script>
+    <!-- directives -->
+    <!-- services -->
+</body>
+
+</html>
