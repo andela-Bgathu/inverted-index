@@ -1,5 +1,4 @@
 class InvertedIndex {
-
   /**
      * Create an Inverted Index.
      * @param {string} path - path to file.
@@ -22,7 +21,6 @@ class InvertedIndex {
       return err;
     }
   }
-
   /**
    * Verify data is valid.
    * @param {Object} JsonData - JSON read from a json file.
@@ -39,10 +37,9 @@ class InvertedIndex {
       if (keys.length === 2) {
         dataValid = true;
       }
-      return dataValid;
-    } else { return false; }
+    } else { dataValid = false; }
+    return dataValid;
   }
-
   /**
    * return cleaned data.
    * @param {Object} JsonData - JSON read from a json file.
@@ -78,8 +75,7 @@ class InvertedIndex {
       return false;
     }
   }
-
-    /**
+   /**
    * Create an index.
    * @param {Array}  - from cleanData.
    * @return {Object} - [word: '', location: [0 || 1 || 0, 1] ].
@@ -136,7 +132,6 @@ class InvertedIndex {
   searchTerms(terms) {
     return terms.split(/\W/);
   }
-
     /**
    * set up filename and search terms.
    * @param {string} - search terms
@@ -164,7 +159,7 @@ class InvertedIndex {
     const searchterms = this.searchTerms(terms);
     const searchresults = {};
     if (filename === 'All') {
-      for (const index of Object.keys(this.indexes)) {
+      (Object.keys(this.indexes)).forEach((index) => {
         const indexobj = [];
         const termlist = [];
         searchterms.forEach((term) => {
@@ -182,9 +177,9 @@ class InvertedIndex {
           }
         });
         searchresults[index] = indexobj;
-      }
+      });
     } else {
-      for (const index of Object.keys(this.indexes)) {
+      (Object.keys(this.indexes)).forEach((index) => {
         if (index === filename) {
           const indexobj = [];
           const termlist = [];
@@ -204,7 +199,7 @@ class InvertedIndex {
           });
           searchresults[index] = indexobj;
         }
-      }
+      });
     }
     return searchresults;
   }
