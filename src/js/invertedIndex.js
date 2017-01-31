@@ -71,12 +71,11 @@ class InvertedIndex {
     }
     return rawData;
   }
-
   /**
    * checkErrors
    *
    * Check if an error string is passed into it instead of an array or object.
-   * 
+   *
    * @param {object}  - from cleanData or getJson.
    * @returns {bool} - true or false.
    */
@@ -131,7 +130,6 @@ class InvertedIndex {
     }
     this.indexes[file] = indexData;
   }
-
   /**
    * getIndex
    *
