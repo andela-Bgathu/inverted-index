@@ -1,16 +1,19 @@
 class InvertedIndex {
   /**
      * Create an Inverted Index.
-     * @param {string} path - path to file.
+     * @param {Object} Indexes - holds each index as value and key as the index's file name.
      */
   constructor() {
     this.indexes = {}; // holds all indexes created
   }
   /**
-     * Convert data to JSON.
-     * @param {string} readData - read from a file in byte or other form.
-     * @return {Object} json object from the file.
-     */
+    * getJson
+    *
+    * Convert data to JSON Object.
+    *
+    * @param {string} readData - read from a file in byte or other form.
+    * @returns {Object}  - json object from the file.
+    */
   getJson(readData) {
     try {
       return JSON.parse(readData);
@@ -21,10 +24,13 @@ class InvertedIndex {
       return err;
     }
   }
-  /**
-   * Verify data is valid.
+  /*
+   * validateJsonData
+   *
+   * Verify data is valid and has both 'text' and 'title' as keys for each object.
+   *
    * @param {Object} JsonData - JSON read from a json file.
-   * @return {bool} - true || false.
+   * @returns {bool} - true || false.
    */
   validateJsonData(JsonData) {
     let dataValid = false;
@@ -34,16 +40,19 @@ class InvertedIndex {
         keyArray.push(...(Object.keys(book)));
       });
       const keys = Array.from(new Set(keyArray));
-      if (keys.length === 2) {
+      if (keys.length === 2 && keys.includes('text', 'title')) {
         dataValid = true;
       }
     } else { dataValid = false; }
     return dataValid;
   }
   /**
-   * return cleaned data.
+   * cleanData
+   *
+   * return an array of each word and its location.
+   *
    * @param {Object} JsonData - JSON read from a json file.
-   * @return {Object} - [word, location: [0 || 1 || 0, 1] ].
+   * @returns {Object} - [word, location: [0 || 1 || 0, 1] ].
    */
   cleanData(JsonData) {
     const rawData = [];
@@ -64,9 +73,12 @@ class InvertedIndex {
   }
 
   /**
-   * Verify data sent back if an error retur false.
+   * checkErrors
+   *
+   * Check if an error string is passed into it instead of an array or object.
+   * 
    * @param {object}  - from cleanData or getJson.
-   * @return {bool} - true or false.
+   * @returns {bool} - true or false.
    */
   checkErrors(dataVerified) {
     if (dataVerified !== 'false' || dataVerified.includes('File Empty')) {
@@ -76,7 +88,10 @@ class InvertedIndex {
     }
   }
    /**
-   * Create an index.
+   * createIndex
+   *
+   * Creates an index for each file passed to it.
+   *
    * @param {Array}  - from cleanData.
    * @return {Object} - [word: '', location: [0 || 1 || 0, 1] ].
    */
@@ -118,22 +133,31 @@ class InvertedIndex {
   }
 
   /**
-   * return Index.
+   * getIndex
+   *
+   * return the index whose key is the passed filepath.
+   *
    * @return {Object} - [name: '', location: [0 || 1 || 0, 1] ].
    */
   getIndex(filepath) {
     return this.indexes[filepath];
   }
   /**
+   * searchTerms
+   *
    * process search terms in recursive arrays.
+   *
    * @param {string} - search terms
    * @return {Array} - [search terms].
    */
   searchTerms(terms) {
     return terms.split(/\W/);
   }
-    /**
+  /**
+   * setUpSearch
+   *
    * set up filename and search terms.
+   *
    * @param {string} - search terms
    * @return {Array} - [filename, [terms]].
    */
@@ -150,7 +174,10 @@ class InvertedIndex {
     return [filename, termsList];
   }
   /**
+   * searchIndex
+   *
    * search the created index.
+   *
    * @param {string} - filename.json - optional
    * @param {string} - search terms
    * @return {Object} - [filename: '.json', results: [name: '', location: [0 || 1 || 0, 1]].
