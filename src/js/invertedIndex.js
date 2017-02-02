@@ -172,7 +172,7 @@ class InvertedIndex {
    * @return {Array} - [filename, [terms]].
    */
   setUpSearch(terms) {
-    let filename = undefined;
+    let filename;
     const termsList = [];
     if (terms[0].includes('.json')) {
       filename = terms[0];
