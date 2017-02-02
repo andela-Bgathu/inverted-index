@@ -65,10 +65,7 @@ class InvertedIndex {
     const rawData = [];
     if (this.validateJsonData(JsonData)) {
       JsonData.forEach((book, index) => {
-        const words = JSON.stringify(book)
-          .replace(/,(?=\S)/g, ' ')
-          .replace(/\btitle\b|\btext\b|,(?=\s)|[:.{}""]/g, '')
-          .split(' ');
+        const words = `${book.text} ${book.title}`.split(' ');
         words.forEach((word) => {
           rawData.push([word.toLowerCase(), index]);
         });

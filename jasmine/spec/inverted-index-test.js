@@ -127,7 +127,7 @@ describe('test functionality', () => {
     it('verifies the index maps string keys to correct objects in the Json array', () => {
       index.createIndex(path2);
       expect(index.indexes['books.json'][0].loc).toEqual([0]);
-      expect(index.indexes['books.json'][5].loc).toEqual([0, 1]);
+      expect(index.indexes['books.json'][3].loc).toEqual([0, 1]);
     });
 
     it('Ensure index is not overwritten by a new JSON file', () => {
