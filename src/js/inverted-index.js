@@ -8,11 +8,12 @@ class InvertedIndex {
     this.indexes = {}; // holds all indexes created
     this.path = require('path');
   }
+
   /**
-     * Read a File.
-     * @param {string} path - path to file.
-     * @return {string} fileData - read from a file.
-     */
+   * Read a File.
+   * @param {string} path - path to file.
+   * @return {string} fileData - read from a file.
+   */
   readFile(filepath) {
     if (filepath) {
       const fs = require('fs');
@@ -28,10 +29,13 @@ class InvertedIndex {
   }
 
   /**
-     * Convert data to JSON.
-     * @param {string} readData - read from a file in byte or other form.
-     * @return {Object} json object from the file.
-     */
+    * getJson
+    *
+    * Convert data to JSON Object.
+    *
+    * @param {string} readData - read from a file in byte or other form.
+    * @returns {Object}  - json object from the file.
+    */
   getJson(readData) {
     try {
       return JSON.parse(readData);
@@ -42,10 +46,13 @@ class InvertedIndex {
     }
   }
 
-  /**
-   * Verify data is valid.
+  /*
+   * validateJsonData
+   *
+   * Verify data is valid and has both 'text' and 'title' as keys for each object.
+   *
    * @param {Object} JsonData - JSON read from a json file.
-   * @return {bool} - true || false.
+   * @returns {bool} - true || false.
    */
   validateJsonData(JsonData) {
     let dataValid;
@@ -63,9 +70,12 @@ class InvertedIndex {
   }
 
   /**
-   * return cleaned data.
+   * cleanData
+   *
+   * return an array of each word and its location.
+   *
    * @param {Object} JsonData - JSON read from a json file.
-   * @return {Object} - [word, location: [0 || 1 || 0, 1] ].
+   * @returns {Object} - [word, location: [0 || 1 || 0, 1] ].
    */
   cleanData (JsonData) {
     if (this.validateJsonData(JsonData)) {
@@ -86,9 +96,12 @@ class InvertedIndex {
   }
 
   /**
-   * Verify data sent back if an error retur false.
+   * checkErrors
+   *
+   * Check if an error string is passed into it instead of an array or object.
+   *
    * @param {object}  - from cleanData or getJson.
-   * @return {bool} - true or false.
+   * @returns {bool} - true or false.
    */
   checkErrors(dataVerified) {
     if (dataVerified !== 'false' || dataVerified.includes('File Empty')) {
@@ -98,8 +111,11 @@ class InvertedIndex {
     }
   }
 
-    /**
-   * Create an index.
+   /**
+   * createIndex
+   *
+   * Creates an index for each file passed to it.
+   *
    * @param {Array}  - from cleanData.
    * @return {Object} - [word: '', location: [0 || 1 || 0, 1] ].
    */
@@ -138,18 +154,24 @@ class InvertedIndex {
       });
     }
     this.indexes[this.path.basename(filepath)] = indexData;
-  } // end of createIndex
+  }
 
   /**
-   * return Index.
+   * getIndex
+   *
+   * return the index whose key is the passed filepath.
+   *
    * @return {Object} - [name: '', location: [0 || 1 || 0, 1] ].
    */
   getIndex(filepath) {
     return this.indexes[this.path.basename(filepath)];
   }
+
   /**
+   * searchTerms
+   *
    * process search terms in recursive arrays.
-   * @param {string} - filename.json
+   *
    * @param {string} - search terms
    * @return {Array} - [search terms].
    */
@@ -168,9 +190,11 @@ class InvertedIndex {
     return termsList;
   }
 
-    /**
+  /**
+   * setUpSearch
+   *
    * set up filename and search terms.
-   * @param {string} - filename.json - optional
+   *
    * @param {string} - search terms
    * @return {Array} - [filename, [terms]].
    */
@@ -186,40 +210,42 @@ class InvertedIndex {
     }
     return [filename, termsList];
   }
-  /**
+
+ /**
+   * searchIndex
+   *
    * search the created index.
+   *
    * @param {string} - filename.json - optional
    * @param {string} - search terms
    * @return {Object} - [filename: '.json', results: [name: '', location: [0 || 1 || 0, 1]].
    */
-  searchIndex(...terms) {
+  searchIndex(...terms){
     const termslist = this.setUpSearch(terms);
     const filename = termslist[0];
     const searchterms = termslist[1];
-    const searchresults = [];
-    if (filename === undefined) {
-      for (const index of Object.keys(this.indexes)) {
-        const indexobj = [];
+    let searchresults = [];
+    if (filename == undefined){
+      for(const index of Object.keys(this.indexes)){
+        let indexobj = [];
         this.indexes[index].forEach((indexvalues) => {
-          if (searchterms.indexOf(indexvalues.name) !== -1) {
+          if(searchterms.indexOf(indexvalues.name) != -1){
             indexobj.push(indexvalues);
           }
-        });
-        searchresults.push({ file: index, results: indexobj });
-      }
-    } else {
-      for (const index of Object.keys(this.indexes)) {
-        if (index === filename) {
-          const indexobj = [];
+        })
+        searchresults.push({file: index, results: indexobj});
+    }}else{
+      for(const index of Object.keys(this.indexes)){
+        if (index == filename){
+          let indexobj = [];
           this.indexes[filename].forEach((indexvalues) => {
-            if (searchterms.indexOf(indexvalues.name) !== -1) {
+            if(searchterms.indexOf(indexvalues.name) != -1){
               indexobj.push(indexvalues);
             }
-          });
-          searchresults.push({ file: filename, results: indexobj });
-        }
-      }
+          })
+          searchresults.push({file: filename, results: indexobj});
     }
+  }}
     return searchresults;
   }
 }

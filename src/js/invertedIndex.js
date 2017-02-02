@@ -1,4 +1,5 @@
 class InvertedIndex {
+
   /**
      * Create an Inverted Index.
      * @param {Object} Indexes - holds each index as value and key as the index's file name.
@@ -6,6 +7,7 @@ class InvertedIndex {
   constructor() {
     this.indexes = {}; // holds all indexes created
   }
+
   /**
     * getJson
     *
@@ -24,6 +26,7 @@ class InvertedIndex {
       return err;
     }
   }
+
   /*
    * validateJsonData
    *
@@ -46,6 +49,7 @@ class InvertedIndex {
     } else { dataValid = false; }
     return dataValid;
   }
+
   /**
    * cleanData
    *
@@ -71,6 +75,7 @@ class InvertedIndex {
     }
     return rawData;
   }
+
   /**
    * checkErrors
    *
@@ -86,6 +91,7 @@ class InvertedIndex {
       return false;
     }
   }
+
    /**
    * createIndex
    *
@@ -130,6 +136,7 @@ class InvertedIndex {
     }
     this.indexes[file] = indexData;
   }
+
   /**
    * getIndex
    *
@@ -140,6 +147,7 @@ class InvertedIndex {
   getIndex(filepath) {
     return this.indexes[filepath];
   }
+
   /**
    * searchTerms
    *
@@ -151,6 +159,7 @@ class InvertedIndex {
   searchTerms(terms) {
     return terms.split(/\W/);
   }
+
   /**
    * setUpSearch
    *
@@ -171,6 +180,7 @@ class InvertedIndex {
     }
     return [filename, termsList];
   }
+
   /**
    * searchIndex
    *
