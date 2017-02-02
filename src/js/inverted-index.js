@@ -1,18 +1,22 @@
 class InvertedIndex {
 
   /**
-     * Create an Inverted Index.
-     * @param {string} path - path to file.
-     */
+   * Create an Inverted Index.
+   *
+   * @param {Object} Indexes - holds each index as value and key as the index's file name.
+   */
   constructor() {
     this.indexes = {}; // holds all indexes created
     this.path = require('path');
   }
 
   /**
-   * Read a File.
-   * @param {string} path - path to file.
-   * @return {string} fileData - read from a file.
+   * getJson
+   *
+   * Convert data to JSON Object.
+   *
+   * @param {string} readData - read from a file in byte or other form.
+   * @returns {Object}  - json object from the file.
    */
   readFile(filepath) {
     if (filepath) {
@@ -29,13 +33,13 @@ class InvertedIndex {
   }
 
   /**
-    * getJson
-    *
-    * Convert data to JSON Object.
-    *
-    * @param {string} readData - read from a file in byte or other form.
-    * @returns {Object}  - json object from the file.
-    */
+   * getJson
+   *
+   * Convert data to JSON Object.
+   *
+   * @param {string} readData - read from a file in byte or other form.
+   * @returns {Object}  - json object from the file.
+   */
   getJson(readData) {
     try {
       return JSON.parse(readData);
@@ -64,8 +68,12 @@ class InvertedIndex {
       const keys = Array.from(new Set(keyArray));
       if (keys.length === 2 && keys.includes('title', 'text')) {
         dataValid = true;
-      } else { dataValid = false; }
-    } else { dataValid = false; }
+      } else {
+        dataValid = false;
+      }
+    } else {
+      dataValid = false;
+    }
     return dataValid;
   }
 
@@ -77,7 +85,7 @@ class InvertedIndex {
    * @param {Object} JsonData - JSON read from a json file.
    * @returns {Object} - [word, location: [0 || 1 || 0, 1] ].
    */
-  cleanData (JsonData) {
+  cleanData(JsonData) {
     if (this.validateJsonData(JsonData)) {
       const rawData = [];
       JsonData.forEach((book, index) => {
@@ -111,7 +119,7 @@ class InvertedIndex {
     }
   }
 
-   /**
+  /**
    * createIndex
    *
    * Creates an index for each file passed to it.
@@ -177,6 +185,7 @@ class InvertedIndex {
    */
   searchTerms(terms) {
     const termsList = [];
+
     function getTerms(terms) {
       terms.forEach((term) => {
         if (Array.isArray(term)) {
@@ -211,7 +220,7 @@ class InvertedIndex {
     return [filename, termsList];
   }
 
- /**
+  /**
    * searchIndex
    *
    * search the created index.
@@ -220,32 +229,40 @@ class InvertedIndex {
    * @param {string} - search terms
    * @return {Object} - [filename: '.json', results: [name: '', location: [0 || 1 || 0, 1]].
    */
-  searchIndex(...terms){
+  searchIndex(...terms) {
     const termslist = this.setUpSearch(terms);
     const filename = termslist[0];
     const searchterms = termslist[1];
     let searchresults = [];
-    if (filename == undefined){
-      for(const index of Object.keys(this.indexes)){
+    if (filename == undefined) {
+      for (const index of Object.keys(this.indexes)) {
         let indexobj = [];
         this.indexes[index].forEach((indexvalues) => {
-          if(searchterms.indexOf(indexvalues.name) != -1){
+          if (searchterms.indexOf(indexvalues.name) != -1) {
             indexobj.push(indexvalues);
           }
         })
-        searchresults.push({file: index, results: indexobj});
-    }}else{
-      for(const index of Object.keys(this.indexes)){
-        if (index == filename){
+        searchresults.push({
+          file: index,
+          results: indexobj
+        });
+      }
+    } else {
+      for (const index of Object.keys(this.indexes)) {
+        if (index == filename) {
           let indexobj = [];
           this.indexes[filename].forEach((indexvalues) => {
-            if(searchterms.indexOf(indexvalues.name) != -1){
+            if (searchterms.indexOf(indexvalues.name) != -1) {
               indexobj.push(indexvalues);
             }
           })
-          searchresults.push({file: filename, results: indexobj});
+          searchresults.push({
+            file: filename,
+            results: indexobj
+          });
+        }
+      }
     }
-  }}
     return searchresults;
   }
 }

@@ -1,21 +1,22 @@
 class InvertedIndex {
 
   /**
-     * Create an Inverted Index.
-     * @param {Object} Indexes - holds each index as value and key as the index's file name.
-     */
+   * Create an Inverted Index.
+   *
+   * @param {Object} Indexes - holds each index as value and key as the index's file name.
+   */
   constructor() {
     this.indexes = {}; // holds all indexes created
   }
 
   /**
-    * getJson
-    *
-    * Convert data to JSON Object.
-    *
-    * @param {string} readData - read from a file in byte or other form.
-    * @returns {Object}  - json object from the file.
-    */
+   * getJson
+   *
+   * Convert data to JSON Object.
+   *
+   * @param {string} readData - read from a file in byte or other form.
+   * @returns {Object}  - json object from the file.
+   */
   getJson(readData) {
     try {
       return JSON.parse(readData);
@@ -27,7 +28,7 @@ class InvertedIndex {
     }
   }
 
-  /*
+  /**
    * validateJsonData
    *
    * Verify data is valid and has both 'text' and 'title' as keys for each object.
@@ -46,7 +47,9 @@ class InvertedIndex {
       if (keys.length === 2 && keys.includes('text', 'title')) {
         dataValid = true;
       }
-    } else { dataValid = false; }
+    } else {
+      dataValid = false;
+    }
     return dataValid;
   }
 
@@ -92,7 +95,7 @@ class InvertedIndex {
     }
   }
 
-   /**
+  /**
    * createIndex
    *
    * Creates an index for each file passed to it.
@@ -204,11 +207,17 @@ class InvertedIndex {
           if (termlist.indexOf(term) !== -1) {
             this.indexes[index].forEach((token) => {
               if (token.name === term) {
-                indexobj.push({ name: term, loc: token.loc });
+                indexobj.push({
+                  name: term,
+                  loc: token.loc
+                });
               }
             });
           } else {
-            indexobj.push({ name: term, loc: [] });
+            indexobj.push({
+              name: term,
+              loc: []
+            });
           }
         });
         searchresults[index] = indexobj;
@@ -225,11 +234,17 @@ class InvertedIndex {
             if (termlist.indexOf(term) !== -1) {
               this.indexes[index].forEach((token) => {
                 if (token.name === term) {
-                  indexobj.push({ name: term, loc: token.loc });
+                  indexobj.push({
+                    name: term,
+                    loc: token.loc
+                  });
                 }
               });
             } else {
-              indexobj.push({ name: term, loc: [] });
+              indexobj.push({
+                name: term,
+                loc: []
+              });
             }
           });
           searchresults[index] = indexobj;
