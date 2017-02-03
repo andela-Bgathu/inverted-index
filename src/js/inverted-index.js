@@ -112,10 +112,11 @@ class InvertedIndex {
    */
   checkErrors(dataVerified) {
     if (dataVerified !== 'false' || dataVerified.includes('File Empty')) {
-      return true;
+      let hasError = true;
     } else {
-      return false;
+      let hasError = false;
     }
+    return hasError;
   }
 
   /**
