@@ -85,7 +85,7 @@ class InvertedIndex {
    * @param {Object} JsonData - JSON read from a json file.
    * @returns {Object} - [word, location: [0 || 1 || 0, 1] ].
    */
- cleanData(jsonData) {
+  cleanData(jsonData) {
     const rawData = [];
     if (this.validateJsonData(jsonData)) {
       jsonData.forEach((book, index) => {
