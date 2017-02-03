@@ -149,8 +149,8 @@ describe('test functionality', () => {
 
     it('verifies that a searchresults include filenames', () => {
       index.createIndex(path3);
-      const searchresult = index.searchIndex('wysla.json', 'boswell');
-      expect(Object.keys(searchresult)[0]).toEqual('wysla.json');
+      const searchresult = index.searchIndex('All', 'boswell');
+      expect(Object.keys(searchresult)[1]).toEqual('wysla.json');
       expect(searchresult['wysla.json'][0].name).toEqual('boswell');
     });
 
@@ -174,7 +174,7 @@ describe('test functionality', () => {
         name: 'i',
         loc: [0]
       });
-      expect(end - now).toBeLessThan(2);
+      expect(end - now).toBeLessThan(5);
     });
   });
 });
