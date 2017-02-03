@@ -45,7 +45,7 @@ class InvertedIndex {
       return JSON.parse(readData);
     } catch (err) {
       if (err instanceof SyntaxError) {
-        return 'File Empty or Invalid Json object';
+        return false;
       }
     }
   }
@@ -59,14 +59,14 @@ class InvertedIndex {
    * @returns {bool} - true || false.
    */
   validateJsonData(JsonData) {
-    let dataValid;
+    let dataValid = false;
     const keyArray = []; // hold all the objects keys
     if (Array.isArray(JsonData)) {
       JsonData.forEach((book) => {
         keyArray.push(...(Object.keys(book)));
       });
       const keys = Array.from(new Set(keyArray));
-      if (keys.length === 2 && keys.includes('title', 'text')) {
+      if (keys.length === 2 && keys.includes('text', 'title')) {
         dataValid = true;
       } else {
         dataValid = false;
@@ -86,18 +86,20 @@ class InvertedIndex {
    * @returns {Object} - [word, location: [0 || 1 || 0, 1] ].
    */
   cleanData(JsonData) {
+    let rawData = [];
     if (this.validateJsonData(JsonData)) {
-      const rawData = [];
       JsonData.forEach((book, index) => {
-        const words = `${book.text} ${book.title}`.split(' ');
+        const words = `${book.text} ${book.title}`.split(/\W/);
         words.forEach((word) => {
-          rawData.push([word.toLowerCase(), index]);
+          if (word.trim().length !== 0) {
+            rawData.push([word.toLowerCase(), index]);
+          }
         });
       });
-      return rawData;
     } else {
-      return 'false';
+      rawData = 'false';
     }
+    return rawData;
   }
 
   /**
@@ -127,34 +129,24 @@ class InvertedIndex {
   createIndex(filepath) {
     const cleanedData = this.cleanData(this.getJson(this.readFile(filepath)));
     const indexData = [];
+    const tokensList = [];
     if (this.checkErrors(cleanedData)) {
       cleanedData.forEach((item) => {
-        if (indexData.length === 0) {
-          const tokenObj = {
+        if (tokensList.indexOf(item[0]) !== -1) {
+          indexData.forEach((token) => {
+            if (token.name === item[0]) {
+              token.loc.push(item[1]);
+              const temp = new Set(token.loc);
+              token.loc = Array.from(temp);
+            }
+          });
+        } else {
+          const tokenobject = {
             name: item[0],
             loc: [item[1]]
           };
-          indexData.push(tokenObj); // {name:'alice', loc:[1]}
-        } else {
-          const tokensList = [];
-          indexData.forEach((token) => {
-            tokensList.push(token.name);
-          });
-          if (tokensList.indexOf(item[0]) !== -1) {
-            indexData.forEach((token) => {
-              if (token.name === item[0]) {
-                token.loc.push(item[1]);
-                const t = new Set(token.loc);
-                token.loc = Array.from(t);
-              }
-            });
-          } else {
-            const tokenObj = {
-              name: item[0],
-              loc: [item[1]]
-            };
-            indexData.push(tokenObj);
-          }
+          tokensList.push(item[0]);
+          indexData.push(tokenobject);
         }
       });
     }
@@ -181,19 +173,7 @@ class InvertedIndex {
    * @return {Array} - [search terms].
    */
   searchTerms(terms) {
-    const termsList = [];
-
-    function getTerms(terms) {
-      terms.forEach((term) => {
-        if (Array.isArray(term)) {
-          getTerms(term);
-        } else {
-          termsList.push(term);
-        }
-      });
-    }
-    getTerms(terms);
-    return termsList;
+    return terms.split(/\W/);
   }
 
   /**
@@ -218,47 +198,59 @@ class InvertedIndex {
   }
 
   /**
+   * getIndexResult
+   *
+   * search the passed index.
+   *
+   * @param {string} - index - name of a specific index being searched
+   * @param {string} - search terms
+   * @return {Object} - [name: '', location: [0 || 1 || 0, 1].
+   */
+  getIndexResult(index, searchterms) {
+    const resultObj = [];
+    searchterms.forEach((term) => {
+      let termfound = false;
+      this.indexes[index].forEach((token) => {
+        if (token.name === term) {
+          termfound = true;
+          resultObj.push({
+            name: term,
+            loc: token.loc
+          });
+        }
+      });
+      if (termfound === false) {
+        resultObj.push({
+          name: term,
+          loc: []
+        });
+      }
+    });
+    return resultObj;
+  }
+
+  /**
    * searchIndex
    *
    * search the created index.
    *
-   * @param {string} - filename.json - optional
+   * @param {string} - filename.json  or 'All'
    * @param {string} - search terms
    * @return {Object} - [filename: '.json', results: [name: '', location: [0 || 1 || 0, 1]].
    */
-  searchIndex(...terms) {
-    const termslist = this.setUpSearch(terms);
-    const filename = termslist[0];
-    const searchterms = termslist[1];
-    let searchresults = [];
-    if (filename == undefined) {
-      for (const index of Object.keys(this.indexes)) {
-        let indexobj = [];
-        this.indexes[index].forEach((indexvalues) => {
-          if (searchterms.indexOf(indexvalues.name) != -1) {
-            indexobj.push(indexvalues);
-          }
-        })
-        searchresults.push({
-          file: index,
-          results: indexobj
-        });
-      }
+  searchIndex(filename, terms) {
+    const searchterms = this.searchTerms(terms);
+    const searchresults = {};
+    if (filename === 'All') {
+      (Object.keys(this.indexes)).forEach((index) => {
+        searchresults[index] = this.getIndexResult(index, searchterms);
+      });
     } else {
-      for (const index of Object.keys(this.indexes)) {
-        if (index == filename) {
-          let indexobj = [];
-          this.indexes[filename].forEach((indexvalues) => {
-            if (searchterms.indexOf(indexvalues.name) != -1) {
-              indexobj.push(indexvalues);
-            }
-          })
-          searchresults.push({
-            file: filename,
-            results: indexobj
-          });
+      (Object.keys(this.indexes)).forEach((index) => {
+        if (index === filename) {
+          searchresults[index] = this.getIndexResult(index, searchterms);
         }
-      }
+      });
     }
     return searchresults;
   }

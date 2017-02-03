@@ -24,7 +24,6 @@ class InvertedIndex {
       if (err instanceof SyntaxError) {
         return false;
       }
-      return err;
     }
   }
 
@@ -46,6 +45,8 @@ class InvertedIndex {
       const keys = Array.from(new Set(keyArray));
       if (keys.length === 2 && keys.includes('text', 'title')) {
         dataValid = true;
+      } else {
+        dataValid = false;
       }
     } else {
       dataValid = false;
@@ -73,7 +74,7 @@ class InvertedIndex {
         });
       });
     } else {
-      return 'false';
+      rawData = 'false';
     }
     return rawData;
   }

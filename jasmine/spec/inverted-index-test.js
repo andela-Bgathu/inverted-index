@@ -1,16 +1,13 @@
 const InvertedIndex = require("../../src/js/inverted-index.js");
 
 describe('test functionality', () => {
-  const path1 = [
-    {
-      "text": "Alice falls into a rabbit hole and enters a world full of imagination.",
-      "title": "Alice in Wonderland"
-    },
-    {
-      "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.",
-      "title": "The Lord of the Rings: The Fellowship of the Ring."
-    }
-  ];
+  const path1 = [{
+    "text": "Alice falls into a rabbit hole and enters a world full of imagination.",
+    "title": "Alice in Wonderland"
+  }, {
+    "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.",
+    "title": "The Lord of the Rings: The Fellowship of the Ring."
+  }];
 
   const path2 = __dirname + '/books.json';
   const path3 = __dirname + '/wysla.json';
@@ -41,8 +38,8 @@ describe('test functionality', () => {
     it('tests getJson returns a message when file is empty or has ivalid json', () => {
       const empty = index.readFile(path5);
       const invalidjson = index.readFile(path7);
-      expect(index.getJson(empty)).toBe('File Empty or Invalid Json object');
-      expect(index.getJson(invalidjson)).toBe('File Empty or Invalid Json object');
+      expect(index.getJson(empty)).toBe(false);
+      expect(index.getJson(invalidjson)).toBe(false);
     });
   });
 
@@ -85,19 +82,17 @@ describe('test functionality', () => {
 
   describe('tests searchTerms function', () => {
     it('tests searchTerms returns expected terms', () => {
-      const terms = index.searchTerms(['of', 'alice']);
-      expect(terms).toBeDefined(true);
-      expect(terms).toEqual(['of', 'alice']);
+      const terms = index.searchTerms("['of','alice']");
+      const cleanterms = Array.from(new Set(terms));
+      expect(cleanterms).toBeDefined(true);
+      expect(cleanterms).toEqual(['', 'of', 'alice']);
     });
 
     it('tests searchTerms returns individual terms when using recursive arrays', () => {
-      const terms = index.searchTerms([
-        ['a', 'alice'], 'me', [
-          ['help', ['me', 'out']], 'help'
-        ]
-      ]);
-
-      expect(terms).toEqual(['a', 'alice', 'me', 'help', 'me', 'out', 'help']);
+      const terms = index.searchTerms("[['a', 'alice'], 'me', [['help',\
+                                      ['me', 'out']], 'help']]");
+      const cleanterms = Array.from(new Set(terms));
+      expect(cleanterms).toEqual(['', 'a', 'alice', 'me', 'help','out']);
     });
   });
 
@@ -107,7 +102,7 @@ describe('test functionality', () => {
     });
 
     it('Asserts that if a file has invalid Json there is a msg', () => {
-      expect(index.getJson(index.readFile(path7))).toBe('File Empty or Invalid Json object');
+      expect(index.getJson(index.readFile(path7))).toBe(false);
     });
   });
 
@@ -147,37 +142,38 @@ describe('test functionality', () => {
   describe('Search index', () => {
     it('verifies that a search returns an array of indices of correct objects', () => {
       index.createIndex(path2);
-      expect(index.searchIndex('of')[0].results[0].loc).toEqual([0, 1]);
-      expect(index.searchIndex('alice')[0].results[0].loc).toEqual([0]);
-      expect(index.searchIndex('and')[0].results[0].loc).toEqual([0, 1]);
+      expect(index.searchIndex('books.json', 'of')['books.json'][0].loc).toEqual([0, 1]);
+      expect(index.searchIndex('books.json','alice')['books.json'][0].loc).toEqual([0]);
+      expect(index.searchIndex('books.json','and')['books.json'][0].loc).toEqual([0, 1]);
     });
 
     it('verifies that a searchresults include filenames', () => {
       index.createIndex(path3);
-      const searchresult = index.searchIndex('boswell');
-      expect(searchresult[1].file).toEqual('wysla.json');
-      expect(searchresult[1].results[0].name).toEqual('boswell');
+      const searchresult = index.searchIndex('wysla.json', 'boswell');
+      expect(Object.keys(searchresult)[0]).toEqual('wysla.json');
+      expect(searchresult['wysla.json'][0].name).toEqual('boswell');
     });
 
     it('verifies that if a filename is included as parameter, the correct results are returned', () => {
       index.createIndex(path3);
       const searchresult = index.searchIndex('wysla.json', 'boswell');
-      expect(searchresult[0].file).toEqual('wysla.json');
-      expect(searchresult[0].results[0].name).toEqual('boswell');
-      expect(searchresult[0].results[0].loc).toEqual([0]);
+      expect(Object.keys(searchresult)[0]).toEqual('wysla.json');
+      expect(searchresult['wysla.json'][0].name).toEqual('boswell');
+      expect(searchresult['wysla.json'][0].loc).toEqual([0]);
     });
 
     it('Ensure search does not take too long to execute', () => {
       index.createIndex(path3);
       const now = new Date().getTime();
-      const result = (index.searchIndex('wysla.json', 'i', ['a', 'alice'], 'me', [
-        ['help', ['me', 'out']], 'help', ['me', ['help', ['me', 'out']], 'out']
-      ])[0].results);
+      const result = (index.searchIndex('wysla.json', "'i', ['a', 'alice'],\
+                                        'me', [['help', ['me', 'out']],'help',\
+                                        ['me', ['help', ['me', 'out']], 'out']\
+                                        ]"));
       const end = new Date().getTime();
-      expect(result).toEqual([{
+      expect(result['wysla.json'][1]).toEqual({
         name: 'i',
         loc: [0]
-      }]);
+      });
       expect(end - now).toBeLessThan(2);
     });
   });
