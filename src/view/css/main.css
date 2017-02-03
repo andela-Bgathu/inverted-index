@@ -9,9 +9,9 @@ body {
 
 #headtext {
     color: white;
-    font-family: cursive;
+    font-family: 'Roboto', sans-serif;
     font-size: 50px;
-    float: left;
+    float: right;
 }
 
 .header {
@@ -22,7 +22,7 @@ body {
     margin-left: 12px;
     margin-right: auto;
     height: 100px;
-    background-color: #333538;
+    background-color: #2F3F73;
     margin-bottom: 10px;
 }
 
@@ -35,7 +35,7 @@ body {
     min-height: 900px;
     height: auto;
     padding-left: 30px;
-    background-color: #B9D7D9;
+    background-color: #FFE5AA;
     margin-bottom: 10px;
 }
 
@@ -47,7 +47,7 @@ body {
     min-height: 900px;
     height: auto;
     padding-left: 10px;
-    background-color: #F4EBC3;
+    background-color: #FFDFAC;
     margin-bottom: 10px;
 }
 
@@ -72,6 +72,9 @@ body {
 #table {
     width: 100%;
 }
+#indexes {
+    margin-bottom: 30px;
+}
 
 th {
     width: 200px;
@@ -82,4 +85,11 @@ th,
 td {
     border: 1px solid black;
     text-align: center;
+}
+.fileholder{
+    margin-right: 40px;
+}
+.search{
+    margin-left: 15px;
+    width: 171px;
 }

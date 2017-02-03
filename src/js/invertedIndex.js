@@ -7,29 +7,6 @@ class InvertedIndex {
    */
   constructor() {
     this.indexes = {}; // holds all indexes created
-    this.path = require('path');
-  }
-
-  /**
-   * getJson
-   *
-   * Convert data to JSON Object.
-   *
-   * @param {string} readData - read from a file in byte or other form.
-   * @returns {Object}  - json object from the file.
-   */
-  readFile(filepath) {
-    if (filepath) {
-      const fs = require('fs');
-      try {
-        const fileData = fs.readFileSync(filepath, 'utf-8');
-        return fileData;
-      } catch (err) {
-        if (err.code === 'ENOENT') {
-          return 'file Not Found';
-        }
-      }
-    }
   }
 
   /**
@@ -86,13 +63,14 @@ class InvertedIndex {
    * @returns {Object} - [word, location: [0 || 1 || 0, 1] ].
    */
   cleanData(JsonData) {
-    let rawData = [];
+    const rawData = [];
     if (this.validateJsonData(JsonData)) {
       JsonData.forEach((book, index) => {
-        const words = (`${book.text} ${book.title}`.split(/\W/))
-          .filter(word => word != '');
+        const words = `${book.text} ${book.title}`.split(/\W/);
         words.forEach((word) => {
-          rawData.push([word.toLowerCase(), index]);
+          if (word.trim().length !== 0) {
+            rawData.push([word.toLowerCase(), index]);
+          }
         });
       });
     } else {
@@ -127,8 +105,8 @@ class InvertedIndex {
    * @param {Array}  - from cleanData.
    * @return {Object} - [word: '', location: [0 || 1 || 0, 1] ].
    */
-  createIndex(filepath) {
-    const cleanedData = this.cleanData(this.getJson(this.readFile(filepath)));
+  createIndex(file, data) {
+    const cleanedData = this.cleanData(this.getJson(data));
     const indexData = [];
     const tokensList = [];
     if (this.checkErrors(cleanedData)) {
@@ -151,18 +129,18 @@ class InvertedIndex {
         }
       });
     }
-    this.indexes[this.path.basename(filepath)] = indexData;
+    this.indexes[file] = indexData;
   }
 
   /**
    * getIndex
    *
-   * return the index whose key is the passed filepath.
+   * return the index whose key is the passed filename.
    *
    * @return {Object} - [name: '', location: [0 || 1 || 0, 1] ].
    */
-  getIndex(filepath) {
-    return this.indexes[this.path.basename(filepath)];
+  getIndex(filename) {
+    return this.indexes[filename];
   }
 
   /**
@@ -235,5 +213,3 @@ class InvertedIndex {
     return searchresults;
   }
 }
-
-module.exports = InvertedIndex;
