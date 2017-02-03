@@ -16,7 +16,6 @@ describe('test functionality', () => {
   const path6 = `${__dirname}/notExist.json`;
   const path7 = `${__dirname}/incomplete.json`;
   const path8 = `${__dirname}/invalidjson.json`;
-
   const index = new InvertedIndex();
 
   describe('tests readFile method', () => {
@@ -82,7 +81,7 @@ describe('test functionality', () => {
 
   describe('tests getSearchTerms method', () => {
     it('tests sgetSearchTerms returns expected terms', () => {
-      const terms = (index.getSearchTerms("['of','alice']")).filter( term => term !== '');
+      const terms = (index.getSearchTerms("['of','alice']")).filter(term => term !== '');
       expect(terms).toBeDefined(true);
       expect(terms).toEqual(['of', 'alice']);
     });
@@ -90,7 +89,7 @@ describe('test functionality', () => {
     it('tests searchTerms returns individual terms when using recursive arrays', () => {
       const terms = index.getSearchTerms("[['a', 'alice'], 'me', [['help',\
                                       ['me', 'out']], 'help']]")
-                                      .filter( term => term !== '');
+        .filter(term => term !== '');
       expect(terms).toEqual(['a', 'alice', 'me', 'help', 'me', 'out', 'help']);
     });
   });
