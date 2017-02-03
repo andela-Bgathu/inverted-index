@@ -111,10 +111,11 @@ class InvertedIndex {
    * @returns {bool} - true or false.
    */
   checkErrors(dataVerified) {
+    let hasError;
     if (dataVerified !== 'false' || dataVerified.includes('File Empty')) {
-      let hasError = true;
+      hasError = true;
     } else {
-      let hasError = false;
+      hasError = false;
     }
     return hasError;
   }
