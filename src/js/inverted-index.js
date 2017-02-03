@@ -86,7 +86,7 @@ class InvertedIndex {
    * @returns {Object} - [word, location: [0 || 1 || 0, 1] ].
    */
   cleanData(jsonData) {
-    const rawData = [];
+    let rawData = [];
     if (this.validateJsonData(jsonData)) {
       jsonData.forEach((book, index) => {
         const words = (`${book.text} ${book.title}`.split(/\W/))
