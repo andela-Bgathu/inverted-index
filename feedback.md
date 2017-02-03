@@ -13,3 +13,9 @@ NB: Executing the getIndex() method of the Index object instance returns an obje
 Be consistent on documentation syntax
 Use the eslint configuration for hound
 Spacing in the test file
+
+## Winner
+implement the search of parts of words
+line 108 - 114 can be done away with
+variable name for the getIndex method
+re-factor the tokensList (115) code to remove redundancies.

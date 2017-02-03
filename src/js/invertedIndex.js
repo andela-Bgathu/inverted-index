@@ -65,9 +65,11 @@ class InvertedIndex {
     const rawData = [];
     if (this.validateJsonData(JsonData)) {
       JsonData.forEach((book, index) => {
-        const words = `${book.text} ${book.title}`.split(' ');
+        const words = `${book.text} ${book.title}`.split(/\W/);
         words.forEach((word) => {
-          rawData.push([word.toLowerCase(), index]);
+          if (word.trim().length !== 0) {
+            rawData.push([word.toLowerCase(), index]);
+          }
         });
       });
     } else {
@@ -103,34 +105,24 @@ class InvertedIndex {
   createIndex(file, data) {
     const cleanedData = this.cleanData(this.getJson(data));
     const indexData = [];
+    const tokensList = [];
     if (this.checkErrors(cleanedData)) {
       cleanedData.forEach((item) => {
-        if (indexData.length === 0) {
+        if (tokensList.indexOf(item[0]) !== -1) {
+          indexData.forEach((token) => {
+            if (token.name === item[0]) {
+              token.loc.push(item[1]);
+              const temp = new Set(token.loc);
+              token.loc = Array.from(temp);
+            }
+          });
+        } else {
           const tokenobject = {
             name: item[0],
             loc: [item[1]]
           };
-          indexData.push(tokenobject); // {name:'alice', loc:[1]}
-        } else {
-          const tokensList = [];
-          indexData.forEach((token) => {
-            tokensList.push(token.name);
-          });
-          if (tokensList.indexOf(item[0]) !== -1) {
-            indexData.forEach((token) => {
-              if (token.name === item[0]) {
-                token.loc.push(item[1]);
-                const t = new Set(token.loc);
-                token.loc = Array.from(t);
-              }
-            });
-          } else {
-            const tokenobject = {
-              name: item[0],
-              loc: [item[1]]
-            };
-            indexData.push(tokenobject);
-          }
+          tokensList.push(item[0]);
+          indexData.push(tokenobject);
         }
       });
     }
@@ -140,12 +132,12 @@ class InvertedIndex {
   /**
    * getIndex
    *
-   * return the index whose key is the passed filepath.
+   * return the index whose key is the passed filename.
    *
    * @return {Object} - [name: '', location: [0 || 1 || 0, 1] ].
    */
-  getIndex(filepath) {
-    return this.indexes[filepath];
+  getIndex(filename) {
+    return this.indexes[filename];
   }
 
   /**
@@ -182,11 +174,43 @@ class InvertedIndex {
   }
 
   /**
+   * getIndexResult
+   *
+   * search the passed index.
+   *
+   * @param {string} - index - name of a specific index being searched
+   * @param {string} - search terms
+   * @return {Object} - [name: '', location: [0 || 1 || 0, 1].
+   */
+  getIndexResult(index, searchterms) {
+    const resultObj = [];
+    searchterms.forEach((term) => {
+      let termfound = false;
+      this.indexes[index].forEach((token) => {
+        if (token.name === term) {
+          termfound = true;
+          resultObj.push({
+            name: term,
+            loc: token.loc
+          });
+        }
+      });
+      if (termfound === false) {
+        resultObj.push({
+          name: term,
+          loc: []
+        });
+      }
+    });
+    return resultObj;
+  }
+
+  /**
    * searchIndex
    *
    * search the created index.
    *
-   * @param {string} - filename.json - optional
+   * @param {string} - filename.json  or 'All'
    * @param {string} - search terms
    * @return {Object} - [filename: '.json', results: [name: '', location: [0 || 1 || 0, 1]].
    */
@@ -195,56 +219,12 @@ class InvertedIndex {
     const searchresults = {};
     if (filename === 'All') {
       (Object.keys(this.indexes)).forEach((index) => {
-        const indexobj = [];
-        const termlist = [];
-        searchterms.forEach((term) => {
-          this.indexes[index].forEach((token) => {
-            termlist.push(token.name);
-          });
-          if (termlist.indexOf(term) !== -1) {
-            this.indexes[index].forEach((token) => {
-              if (token.name === term) {
-                indexobj.push({
-                  name: term,
-                  loc: token.loc
-                });
-              }
-            });
-          } else {
-            indexobj.push({
-              name: term,
-              loc: []
-            });
-          }
-        });
-        searchresults[index] = indexobj;
+        searchresults[index] = this.getIndexResult(index, searchterms);
       });
     } else {
       (Object.keys(this.indexes)).forEach((index) => {
         if (index === filename) {
-          const indexobj = [];
-          const termlist = [];
-          searchterms.forEach((term) => {
-            this.indexes[index].forEach((token) => {
-              termlist.push(token.name);
-            });
-            if (termlist.indexOf(term) !== -1) {
-              this.indexes[index].forEach((token) => {
-                if (token.name === term) {
-                  indexobj.push({
-                    name: term,
-                    loc: token.loc
-                  });
-                }
-              });
-            } else {
-              indexobj.push({
-                name: term,
-                loc: []
-              });
-            }
-          });
-          searchresults[index] = indexobj;
+          searchresults[index] = this.getIndexResult(index, searchterms);
         }
       });
     }
