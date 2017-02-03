@@ -88,11 +88,13 @@ class InvertedIndex {
    * @returns {bool} - true or false.
    */
   checkErrors(dataVerified) {
+    let hasError;
     if (dataVerified !== 'false' || dataVerified.includes('File Empty')) {
-      return true;
+      hasError = true;
     } else {
-      return false;
+      hasError = false;
     }
+    return hasError;
   }
 
   /**
