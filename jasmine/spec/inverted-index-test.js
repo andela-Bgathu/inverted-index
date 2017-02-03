@@ -92,7 +92,7 @@ describe('test functionality', () => {
       const terms = index.searchTerms("[['a', 'alice'], 'me', [['help',\
                                       ['me', 'out']], 'help']]");
       const cleanterms = Array.from(new Set(terms));
-      expect(cleanterms).toEqual(['', 'a', 'alice', 'me', 'help','out']);
+      expect(cleanterms).toEqual(['', 'a', 'alice', 'me', 'help', 'out']);
     });
   });
 
@@ -143,8 +143,8 @@ describe('test functionality', () => {
     it('verifies that a search returns an array of indices of correct objects', () => {
       index.createIndex(path2);
       expect(index.searchIndex('books.json', 'of')['books.json'][0].loc).toEqual([0, 1]);
-      expect(index.searchIndex('books.json','alice')['books.json'][0].loc).toEqual([0]);
-      expect(index.searchIndex('books.json','and')['books.json'][0].loc).toEqual([0, 1]);
+      expect(index.searchIndex('books.json', 'alice')['books.json'][0].loc).toEqual([0]);
+      expect(index.searchIndex('books.json', 'and')['books.json'][0].loc).toEqual([0, 1]);
     });
 
     it('verifies that a searchresults include filenames', () => {

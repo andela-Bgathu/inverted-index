@@ -177,27 +177,6 @@ class InvertedIndex {
   }
 
   /**
-   * setUpSearch
-   *
-   * set up filename and search terms.
-   *
-   * @param {string} - search terms
-   * @return {Array} - [filename, [terms]].
-   */
-  setUpSearch(terms) {
-    let filename = undefined;
-    const termsList = [];
-    if (terms[0].includes('.json')) {
-      filename = terms[0];
-      delete terms[0];
-      termsList.push(...this.searchTerms(terms));
-    } else {
-      termsList.push(...this.searchTerms(terms));
-    }
-    return [filename, termsList];
-  }
-
-  /**
    * getIndexResult
    *
    * search the passed index.
