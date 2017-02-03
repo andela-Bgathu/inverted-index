@@ -82,17 +82,16 @@ describe('test functionality', () => {
 
   describe('tests searchTerms function', () => {
     it('tests searchTerms returns expected terms', () => {
-      const terms = index.searchTerms("['of','alice']");
-      const cleanterms = Array.from(new Set(terms));
-      expect(cleanterms).toBeDefined(true);
-      expect(cleanterms).toEqual(['', 'of', 'alice']);
+      const terms = (index.searchTerms("['of','alice']")).filter( term => term != '');
+      expect(terms).toBeDefined(true);
+      expect(terms).toEqual(['of', 'alice']);
     });
 
     it('tests searchTerms returns individual terms when using recursive arrays', () => {
       const terms = index.searchTerms("[['a', 'alice'], 'me', [['help',\
-                                      ['me', 'out']], 'help']]");
-      const cleanterms = Array.from(new Set(terms));
-      expect(cleanterms).toEqual(['', 'a', 'alice', 'me', 'help', 'out']);
+                                      ['me', 'out']], 'help']]")
+                                      .filter( term => term != '');
+      expect(terms).toEqual(['a', 'alice', 'me', 'help', 'me', 'out', 'help']);
     });
   });
 
