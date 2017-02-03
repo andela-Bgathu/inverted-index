@@ -151,7 +151,7 @@ class InvertedIndex {
    * @param {string} - search terms
    * @return {Array} - [search terms].
    */
-  searchTerms(terms) {
+  getSearchTerms(terms) {
     return terms.split(/\W/);
   }
 
@@ -197,7 +197,7 @@ class InvertedIndex {
    * @return {Object} - [filename: '.json', results: [name: '', location: [0 || 1 || 0, 1]].
    */
   searchIndex(filename, terms) {
-    const searchterms = this.searchTerms(terms);
+    const searchterms = this.getSearchTerms(terms);
     const searchresults = {};
     if (filename === 'All') {
       (Object.keys(this.indexes)).forEach((index) => {

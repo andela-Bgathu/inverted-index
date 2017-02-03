@@ -89,11 +89,10 @@ class InvertedIndex {
     let rawData = [];
     if (this.validateJsonData(JsonData)) {
       JsonData.forEach((book, index) => {
-        const words = `${book.text} ${book.title}`.split(/\W/);
+        const words = (`${book.text} ${book.title}`.split(/\W/))
+          .filter(word => word != '');
         words.forEach((word) => {
-          if (word.trim().length !== 0) {
-            rawData.push([word.toLowerCase(), index]);
-          }
+          rawData.push([word.toLowerCase(), index]);
         });
       });
     } else {
@@ -174,7 +173,7 @@ class InvertedIndex {
    * @param {string} - search terms
    * @return {Array} - [search terms].
    */
-  searchTerms(terms) {
+  getSearchTerms(terms) {
     return terms.split(/\W/);
   }
 
@@ -220,7 +219,7 @@ class InvertedIndex {
    * @return {Object} - [filename: '.json', results: [name: '', location: [0 || 1 || 0, 1]].
    */
   searchIndex(filename, terms) {
-    const searchterms = this.searchTerms(terms);
+    const searchterms = this.getSearchTerms(terms);
     const searchresults = {};
     if (filename === 'All') {
       (Object.keys(this.indexes)).forEach((index) => {
