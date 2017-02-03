@@ -19,3 +19,9 @@ implement the search of parts of words
 line 108 - 114 can be done away with
 variable name for the getIndex method
 re-factor the tokensList (115) code to remove redundancies.
+
+### friday
+method not function - test file
+line 86 - double equal signs - test file
+string interpolation for the paths - test file
+searchTerms to getSearchTerms - class

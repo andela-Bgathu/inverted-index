@@ -9,17 +9,17 @@ describe('test functionality', () => {
     "title": "The Lord of the Rings: The Fellowship of the Ring."
   }];
 
-  const path2 = __dirname + '/books.json';
-  const path3 = __dirname + '/wysla.json';
-  const path4 = __dirname + '/invalid.json';
-  const path5 = __dirname + '/empty.json';
-  const path6 = __dirname + '/notExist.json';
-  const path7 = __dirname + '/incomplete.json';
-  const path8 = __dirname + '/invalidjson.json';
+  const path2 = `${__dirname}/books.json`;
+  const path3 = `${__dirname}/wysla.json`;
+  const path4 = `${__dirname}/invalid.json`;
+  const path5 = `${__dirname}/empty.json`;
+  const path6 = `${__dirname}/notExist.json`;
+  const path7 = `${__dirname}/incomplete.json`;
+  const path8 = `${__dirname}/invalidjson.json`;
 
   const index = new InvertedIndex();
 
-  describe('tests readFile function', () => {
+  describe('tests readFile method', () => {
     it('tests readFile returns data in file', () => {
       expect(index.readFile(path2).includes('"title": "Alice in Wonderland"')).toBe(true);
     });
@@ -29,7 +29,7 @@ describe('test functionality', () => {
     });
   });
 
-  describe('tests getJson function', () => {
+  describe('tests getJson method', () => {
     it('tests getJson returns Json object', () => {
       const data = index.readFile(path2);
       expect(index.getJson(data).length).toBe(2);
@@ -43,7 +43,7 @@ describe('test functionality', () => {
     });
   });
 
-  describe('tests validateJsonData function', () => {
+  describe('tests validateJsonData method', () => {
     it('tests validateJsonData returns true when book data is valid', () => {
       expect(index.validateJsonData(path1)).toBe(true);
     });
@@ -59,7 +59,7 @@ describe('test functionality', () => {
     });
   });
 
-  describe('tests cleanData function', () => {
+  describe('tests cleanData method', () => {
     it('tests cleanData returns false when data is not valid json', () => {
       const bookdata = index.getJson(index.readFile(path4));
       expect(index.cleanData(bookdata)).toBe('false');
@@ -70,7 +70,7 @@ describe('test functionality', () => {
     });
   });
 
-  describe('tests checkErrors function', () => {
+  describe('tests checkErrors method', () => {
     it('tests checkErrors returns true when no errors', () => {
       expect(index.checkErrors([{}])).toBe(true);
     });
@@ -80,17 +80,17 @@ describe('test functionality', () => {
     });
   });
 
-  describe('tests searchTerms function', () => {
-    it('tests searchTerms returns expected terms', () => {
-      const terms = (index.searchTerms("['of','alice']")).filter( term => term != '');
+  describe('tests getSearchTerms method', () => {
+    it('tests sgetSearchTerms returns expected terms', () => {
+      const terms = (index.getSearchTerms("['of','alice']")).filter( term => term !== '');
       expect(terms).toBeDefined(true);
       expect(terms).toEqual(['of', 'alice']);
     });
 
     it('tests searchTerms returns individual terms when using recursive arrays', () => {
-      const terms = index.searchTerms("[['a', 'alice'], 'me', [['help',\
+      const terms = index.getSearchTerms("[['a', 'alice'], 'me', [['help',\
                                       ['me', 'out']], 'help']]")
-                                      .filter( term => term != '');
+                                      .filter( term => term !== '');
       expect(terms).toEqual(['a', 'alice', 'me', 'help', 'me', 'out', 'help']);
     });
   });
