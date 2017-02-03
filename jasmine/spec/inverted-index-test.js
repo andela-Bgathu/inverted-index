@@ -1,7 +1,6 @@
 const InvertedIndex = require("../../src/js/inverted-index.js");
 
 describe('test functionality', () => {
-
   const path1 = [
     {
       "text": "Alice falls into a rabbit hole and enters a world full of imagination.",
