@@ -1,14 +1,16 @@
 const InvertedIndex = require("../../src/js/inverted-index.js");
 
 describe('test functionality', () => {
-  const path1 = [{
-    "text": "Alice falls into a rabbit hole and enters a world full of imagination.",
-    "title": "Alice in Wonderland"
-  }, {
-    "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.",
-    "title": "The Lord of the Rings: The Fellowship of the Ring."
-  }];
-
+  const path1 = [
+    {
+      "text": "Alice falls into a rabbit hole and enters a world full of imagination.",
+      "title": "Alice in Wonderland"
+    },
+    {
+      "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.",
+      "title": "The Lord of the Rings: The Fellowship of the Ring."
+    }
+  ];
   const path2 = `${__dirname}/books.json`;
   const path3 = `${__dirname}/wysla.json`;
   const path4 = `${__dirname}/invalid.json`;
