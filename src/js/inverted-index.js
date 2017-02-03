@@ -50,7 +50,7 @@ class InvertedIndex {
     }
   }
 
-  /*
+  /**
    * validateJsonData
    *
    * Verify data is valid and has both 'text' and 'title' as keys for each object.
