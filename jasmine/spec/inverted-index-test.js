@@ -1,46 +1,34 @@
 const InvertedIndex = require("../../src/js/inverted-index.js");
 
 describe('test functionality', () => {
-  const path1 = [
-      {
-        "text": "Alice falls into a rabbit hole and enters a world full of imagination.",
-        "title": "Alice in Wonderland"
-      }
-    ];
-  const path2 = [
-      {
-      "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring.",
-      "title": "The Lord of the Rings: The Fellowship of the Ring."
-      }
-    ];
-  const path3 = `${__dirname}/books.json`;
-  const path4 = `${__dirname}/wysla.json`;
-  const path5 = `${__dirname}/invalid.json`;
-  const path6 = `${__dirname}/empty.json`;
-  const path7 = `${__dirname}/notExist.json`;
-  const path8 = `${__dirname}/incomplete.json`;
-  const path9 = `${__dirname}/invalidjson.json`;
+  const path1 = `${__dirname}/books.json`;
+  const path2 = `${__dirname}/wysla.json`;
+  const path3 = `${__dirname}/invalid.json`;
+  const path4 = `${__dirname}/empty.json`;
+  const path5 = `${__dirname}/notExist.json`;
+  const path6 = `${__dirname}/incomplete.json`;
+  const path7 = `${__dirname}/invalidjson.json`;
   const index = new InvertedIndex();
 
   describe('tests readFile method', () => {
     it('tests readFile returns data in file', () => {
-      expect(index.readFile(path3).includes('"title": "Alice in Wonderland"')).toBe(true);
+      expect(index.readFile(path1).includes('"title": "Alice in Wonderland"')).toBe(true);
     });
 
     it('tests readFile checks if a file does not exist', () => {
-      expect(index.readFile(path7)).toBe('file Not Found');
+      expect(index.readFile(path5)).toBe('file Not Found');
     });
   });
 
   describe('tests getJson method', () => {
     it('tests getJson returns Json object', () => {
-      const data = index.readFile(path3);
+      const data = index.readFile(path1);
       expect(index.getJson(data).length).toBe(2);
     });
 
     it('tests getJson returns a message when file is empty or has ivalid json', () => {
-      const empty = index.readFile(path6);
-      const invalidjson = index.readFile(path8);
+      const empty = index.readFile(path4);
+      const invalidjson = index.readFile(path6);
       expect(index.getJson(empty)).toBe(false);
       expect(index.getJson(invalidjson)).toBe(false);
     });
@@ -48,28 +36,30 @@ describe('test functionality', () => {
 
   describe('tests validateJsonData method', () => {
     it('tests validateJsonData returns true when book data is valid', () => {
-      expect(index.validateJsonData(path1)).toBe(true);
+      const jsonData = index.getJson(index.readFile(path1));
+      expect(index.validateJsonData(jsonData)).toBe(true);
     });
 
     it('tests validateJsonData returns false when book data is invalid', () => {
-      const bookdata = index.getJson(index.readFile(path5));
+      const bookdata = index.getJson(index.readFile(path3));
       expect(index.validateJsonData(bookdata)).toBe(false);
     });
 
     it('tests validateJsonData returns false when book data is invalid', () => {
-      const bookdata = index.getJson(index.readFile(path9));
+      const bookdata = index.getJson(index.readFile(path7));
       expect(index.validateJsonData(bookdata)).toBe(false);
     });
   });
 
   describe('tests cleanData method', () => {
     it('tests cleanData returns false when data is not valid json', () => {
-      const bookdata = index.getJson(index.readFile(path5));
+      const bookdata = index.getJson(index.readFile(path3));
       expect(index.cleanData(bookdata)).toBe('false');
     });
 
     it('tests cleanData returns rawData', () => {
-      expect(index.cleanData(path1).length).toEqual(16);
+      const jsonData = index.getJson(index.readFile(path1));
+      expect(index.cleanData(jsonData).length).toEqual(42);
     });
   });
 
@@ -100,35 +90,35 @@ describe('test functionality', () => {
 
   describe('Read book data', () => {
     it('Asserts that a read Json file is not empty', () => {
-      expect(index.getJson(index.readFile(path3)).length).toEqual(2);
+      expect(index.getJson(index.readFile(path1)).length).toEqual(2);
     });
 
     it('Asserts that if a file has invalid Json there is a msg', () => {
-      expect(index.getJson(index.readFile(path8))).toBe(false);
+      expect(index.getJson(index.readFile(path6))).toBe(false);
     });
   });
 
   describe('Populate Index', () => {
     it('Verifies that Index is created once a Json file is read', () => {
-      index.createIndex(path3);
+      index.createIndex(path1);
       expect(Object.keys(index.indexes).length).toBeGreaterThan(0);
     });
 
     it('Ensure each object in JSON array contains a property whose value is a string', () => {
-      const indexData = index.getJson(index.readFile(path5));
+      const indexData = index.getJson(index.readFile(path2));
       expect(typeof indexData[0].text).toBe('string');
       expect(typeof indexData[0].title).toBe('string');
     });
 
     it('verifies the index maps string keys to correct objects in the Json array', () => {
-      index.createIndex(path3);
+      index.createIndex(path1);
       expect(index.indexes['books.json'][0].loc).toEqual([0]);
       expect(index.indexes['books.json'][3].loc).toEqual([0, 1]);
     });
 
     it('Ensure index is not overwritten by a new JSON file', () => {
-      index.createIndex(path3);
-      index.createIndex(path4);
+      index.createIndex(path1);
+      index.createIndex(path2);
       expect(index.indexes['books.json']).toBeDefined(true);
       expect(index.indexes['wysla.json']).toBeDefined(true);
     });
@@ -136,28 +126,28 @@ describe('test functionality', () => {
 
   describe('GetIndex', () => {
     it('Ensure getIndex takes a string arg specifying the location of the JSON data', () => {
-      index.createIndex(path4);
+      index.createIndex(path2);
       expect(index.getIndex('wysla.json')).toBeDefined(true);
     });
   });
 
   describe('Search index', () => {
     it('verifies that a search returns an array of indices of correct objects', () => {
-      index.createIndex(path3);
+      index.createIndex(path1);
       expect(index.searchIndex('books.json', 'of')['books.json'][0].loc).toEqual([0, 1]);
       expect(index.searchIndex('books.json', 'alice')['books.json'][0].loc).toEqual([0]);
       expect(index.searchIndex('books.json', 'and')['books.json'][0].loc).toEqual([0, 1]);
     });
 
     it('verifies that a searchresults include filenames', () => {
-      index.createIndex(path4);
+      index.createIndex(path2);
       const searchresult = index.searchIndex('All', 'boswell');
       expect(Object.keys(searchresult)[1]).toEqual('wysla.json');
       expect(searchresult['wysla.json'][0].name).toEqual('boswell');
     });
 
     it('verifies that if a filename is included as parameter, the correct results are returned', () => {
-      index.createIndex(path4);
+      index.createIndex(path2);
       const searchresult = index.searchIndex('wysla.json', 'boswell');
       expect(Object.keys(searchresult)[0]).toEqual('wysla.json');
       expect(searchresult['wysla.json'][0].name).toEqual('boswell');
@@ -165,7 +155,7 @@ describe('test functionality', () => {
     });
 
     it('Ensure search does not take too long to execute', () => {
-      index.createIndex(path4);
+      index.createIndex(path2);
       const now = new Date().getTime();
       const result = (index.searchIndex('wysla.json', "'i', ['a', 'alice'],\
                                         'me', [['help', ['me', 'out']],'help',\
