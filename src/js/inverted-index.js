@@ -55,14 +55,14 @@ class InvertedIndex {
    *
    * Verify data is valid and has both 'text' and 'title' as keys for each object.
    *
-   * @param {Object} JsonData - JSON read from a json file.
+   * @param {Object} jsonData - JSON read from a json file.
    * @returns {bool} - true || false.
    */
-  validateJsonData(JsonData) {
+  validateJsonData(jsonData) {
     let dataValid = false;
     const keyArray = []; // hold all the objects keys
-    if (Array.isArray(JsonData)) {
-      JsonData.forEach((book) => {
+    if (Array.isArray(jsonData)) {
+      jsonData.forEach((book) => {
         keyArray.push(...(Object.keys(book)));
       });
       const keys = Array.from(new Set(keyArray));
@@ -85,12 +85,12 @@ class InvertedIndex {
    * @param {Object} JsonData - JSON read from a json file.
    * @returns {Object} - [word, location: [0 || 1 || 0, 1] ].
    */
-  cleanData(JsonData) {
+  cleanData(jsonData) {
     let rawData = [];
-    if (this.validateJsonData(JsonData)) {
-      JsonData.forEach((book, index) => {
+    if (this.validateJsonData(jsonData)) {
+      jsonData.forEach((book, index) => {
         const words = (`${book.text} ${book.title}`.split(/\W/))
-          .filter(word => word != '');
+          .filter(word => word !== '');
         words.forEach((word) => {
           rawData.push([word.toLowerCase(), index]);
         });
