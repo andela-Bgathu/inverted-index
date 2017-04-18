@@ -5,4 +5,5 @@ after_script:
   - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
 after_success: 
   - npm run coverage
+after_deploy:
   - $DOCKER_BUILD_TRIGGER 
