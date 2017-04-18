@@ -5,4 +5,4 @@ after_script:
   - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
 after_success: 
   - 'npm run coverage'
-  - $DOCKER_BUILD_TRIGGER
+   - "curl -H 'Content-Type: application/json' --data {'build':true} -X POST \"https://registry.hub.docker.com/u/boswellgathu/inverted-index/trigger/165a01c2-9878-4768-9a95-c2f38a39d643/""
