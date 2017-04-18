@@ -3,4 +3,6 @@ node_js:
   - "6"
 after_script:
   - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
-after_success: 'npm run coverage'
+after_success: 
+  - 'npm run coverage'
+  - $DOCKER_BUILD_TRIGGER
