@@ -1,10 +1,4 @@
-FROM centos:centos6
-
-# Enable EPEL for Node.js
-RUN rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
-
-# Install Node...
-RUN yum install -y npm
+FROM node:boron
 
 # directory to run the app from in the image
 RUN mkdir -p /usr/src/inverted-index
@@ -20,7 +14,7 @@ RUN npm install -g gulp
 COPY . /usr/src/inverted-index
 
 # Your app binds to port 8080 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
-EXPOSE 3000
+EXPOSE 8080
 
 # run the app
 CMD cd /usr/src/inverted-index && gulp
