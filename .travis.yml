@@ -5,4 +5,4 @@ after_script:
   - cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
 after_success: 
   - npm run coverage
-  - curl -H “Content-Type: application/json” --data {“build”:true} -X POST https://registry.hub.docker.com/u/boswellgathu/inverted-index/trigger/17fe96c9-28a7-4e43-bf91-7831568a9a53/
+  - curl -H “Content-Type:\ application/json” --data {“build”:true} -X POST https://registry.hub.docker.com/u/boswellgathu/inverted-index/trigger/17fe96c9-28a7-4e43-bf91-7831568a9a53/
