@@ -14,7 +14,7 @@ RUN npm install -g gulp
 COPY . /usr/src/inverted-index
 
 # Your app binds to port 8080 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
-EXPOSE 8080
+EXPOSE 2700
 
 # run the app
 CMD cd /usr/src/inverted-index && gulp
